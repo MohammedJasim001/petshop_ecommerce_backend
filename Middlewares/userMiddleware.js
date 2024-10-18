@@ -14,7 +14,7 @@ export const userToken = async(req,res,next)=>{
 
         jwt.verify(token,process.env.JWT_SECRETE_KEY,(err,user)=>{
             if(err){
-                res.status(404).json({message:'unauthorized'})
+                res.status(404).json({message:'unauthorized check your token again'})
             }
             req.email=user.email
             next()

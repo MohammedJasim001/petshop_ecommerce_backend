@@ -10,7 +10,7 @@ export const register = async (req, res) => {
 
   if (error) {
     console.log(error, "error from validation");
-    return res.status(400).json({ message: "Found validation error" });
+    return res.status(400).json({ message: "Found validation error",error });
   }
 
   console.log("registration achived");
@@ -37,7 +37,7 @@ export const register = async (req, res) => {
 
     return res
       .status(201)
-      .json({ status: "success", message: "login successfull", data: newUser });
+      .json({ status: "success", message: "registration successfull", data: newUser });
   } catch (error) {
     res.status(500).json({ message: error });
   }
