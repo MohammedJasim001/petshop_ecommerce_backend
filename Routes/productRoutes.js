@@ -7,8 +7,8 @@ const router = express.Router()
 
 router.use(userToken)
 
-router.get('/products',tryCatchMiddleware,viewProduct)
-router.get('/products/:id',tryCatchMiddleware,viewProductById)
-router.get('/products/category/:categoryName',tryCatchMiddleware,viewProductByCategory)
+router.get('/products',tryCatchMiddleware(viewProduct))
+router.get('/products/:id',tryCatchMiddleware(viewProductById))
+router.get('/products/category/:categoryName',tryCatchMiddleware(viewProductByCategory))
 
 export default router

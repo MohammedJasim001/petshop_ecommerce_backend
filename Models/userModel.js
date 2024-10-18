@@ -21,7 +21,15 @@ const userSchema = new mongoose.Schema({
         type:Date,
         default:Date.now(),
         required:true
-    }
+    },
+    isDeleted:{
+        type:Boolean,
+        default:false
+    },
+    cart:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Cart'
+    }]
     
 })
 
