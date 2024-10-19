@@ -31,6 +31,7 @@ export const register = async (req, res) => {
       userName,
       email,
       password: hashedPassword,
+      image:req.cloudinaryImageUrl
     });
 
     await newUser.save();
