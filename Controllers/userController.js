@@ -16,7 +16,7 @@ export const register = async (req, res) => {
   console.log("registration achived");
 
   const { userName, email, password } = value;
-  try {
+
     const existUser = await User.findOne({ email });
     if (existUser) {
       return res
@@ -38,17 +38,14 @@ export const register = async (req, res) => {
     return res
       .status(201)
       .json({ status: "success", message: "registration successfull", data: newUser });
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
 };
 
 //Login
 
 export const login = async (req, res) => {
+
   const { email, password } = req.body;
 
-  try {
     const userExist =await User.findOne({ email });
     if (!userExist) {
       return res.status(404).json({ error: "user not exist" });
@@ -65,8 +62,4 @@ export const login = async (req, res) => {
 
     res.cookie("Access_token",token,{httpOnly:true,expire:expiryDate})
     .status(201).json({message:"login successfull", user:data,token });
-  } catch (error) {
-    res.status(500).json({message:"server side error"})
-    console.log(error)
-  }
 };

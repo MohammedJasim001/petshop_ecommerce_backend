@@ -4,7 +4,7 @@ import User from "../Models/userModel.js";
 
 //add to cart
 export const addToCart = async (req,res)=>{
-    try {
+
         const userId = req.params.userId
         const productId = req.params.productId
   //find User
@@ -13,9 +13,9 @@ export const addToCart = async (req,res)=>{
         if(!user){
             return res.status(404).json({message:"user not found"})
         }
-        if(user.isDeleted===true){
-            res.status(200).json({message:'Admin blocked you'})
-        }
+        // if(user.isDeleted===true){
+        //     res.status(200).json({message:'Admin blocked you'})
+        // }
         
   //find Product
         const product = await Products.findById(productId)
@@ -40,44 +40,32 @@ export const addToCart = async (req,res)=>{
             user.cart.push(cartItem._id)
             await user.save()
             return res.status(201).json({message:"Item successfully added to cart"})
-
         }
-
-
-    } catch (error) {
-        res.status(500).json({error:'server error of add to cart'})
-        console.log(error)
-    }
 }
 
 
 //view the cart
 export const cartVeiw = async (req, res) => {
-  try {
-    const userId = req.params.userId
-    const user = await User.findById(userId).populate({
-      path: "cart",
-      populate: { path: "productId" },
-    });
-
-    if (!user) {
-      return res.status(404).json({ error: "user not found" });
-    }
-
-    if (!user.cart || user.cart.length === 0) {
-      res.status(200).json({ message: "your cart is empty", data: [] });
-    }
-    res.status(200).json(user.cart);
-  } catch (error) {
-    res.status(500).json({error:"server error from view cart"})
-    console.log(error)
-  }
+        const userId = req.params.userId
+        const user = await User.findById(userId).populate({
+          path: "cart",
+          populate: { path: "productId" },
+        });
+      
+        if (!user) {
+          return res.status(404).json({ error: "user not found" });
+        }
+      
+        if (!user.cart || user.cart.length === 0) {
+          res.status(200).json({ message: "your cart is empty", data: [] });
+        }
+        res.status(200).json(user.cart);
 };
 
 
 //increment item quantity
 export const incrementQuantity = async(req,res)=>{
-   try {
+
         const userId = req.params.userId
         const productId = req.params.productId
        
@@ -102,19 +90,13 @@ export const incrementQuantity = async(req,res)=>{
         cartItem.quantity++
         await cartItem.save()
         res.status(201).json({message:"Item count increased"})
-
-   } catch (error) {
-        res.status(500).json({error:"Server side error from increment count"})
-        console.log(error)
-   }
-
 }
 
 
 //decrement item quantity
 export const decrementQuantity = async(req,res)=>{
-    try {
-        const {userId,productId} = req.params
+
+    const {userId,productId} = req.params
 
   //find user
         const user = await User.findById(userId)
@@ -141,18 +123,12 @@ export const decrementQuantity = async(req,res)=>{
         else{
             res.status(404).json({message:'cannot decrease count lessthan zero'})
         }
-        
-
-    } catch (error) {
-        res.status(500).json({error:'server error from cart decreases'})
-        console.log(error)
-    }
 } 
 
 
 //delete item from the cart
 export const deleteCart = async(req,res)=>{
-    try {
+
         const {productId,userId} = req.params
   
   //find user
@@ -184,11 +160,5 @@ export const deleteCart = async(req,res)=>{
             res.status(200).json({message:"Item successfully removed from the cart"})
         }
 
-        
-
-    } catch (error) {
-        res.status(500).json({error:'server error from deletCart'})
-        console.log(error)
-    }
-    
+   
 }

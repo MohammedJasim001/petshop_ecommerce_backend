@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import userRoute from './Routes/userRoutes.js'
 import productRoute from './Routes/productRoutes.js'
 import cartRoute from './Routes/cartRoutes.js'
+import wishlistRoute from './Routes/wishlistRouter.js'
 
 const port = 5000
 const app = express()
@@ -14,6 +15,7 @@ app.use(express.json())
 app.use('/api/users',userRoute)
 app.use('/api/users',productRoute)
 app.use('/api/users',cartRoute)
+app.use('/api/users',wishlistRoute)
 
 mongoose.connect(process.env.MONGO_URI)
         .then(()=>console.log('mongodb connected'))
