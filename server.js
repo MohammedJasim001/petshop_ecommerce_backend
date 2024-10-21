@@ -5,6 +5,7 @@ import userRoute from './Routes/userRoutes.js'
 import productRoute from './Routes/productRoutes.js'
 import cartRoute from './Routes/cartRoutes.js'
 import wishlistRoute from './Routes/wishlistRouter.js'
+import orderRoute from './Routes/orderRoutes.js'
 
 const port = 5000
 const app = express()
@@ -16,6 +17,7 @@ app.use('/api/users',userRoute)
 app.use('/api/users',productRoute)
 app.use('/api/users',cartRoute)
 app.use('/api/users',wishlistRoute)
+app.use('/api/users',orderRoute)
 
 mongoose.connect(process.env.MONGO_URI)
         .then(()=>console.log('mongodb connected'))
