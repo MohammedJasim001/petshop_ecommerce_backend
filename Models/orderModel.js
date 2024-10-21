@@ -6,15 +6,16 @@ const orderSchema = new mongoose.Schema({
         ref:'Users',
         required:true
     },
-    product:[{
+    products:[{
         productId:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'Products',
             required:true
         },
-
+        quantity:Number,
+        price:Number
     }],
-    purchaseData:{
+    purchaseDate:{
         type:Date,
         required:true,
         default:Date.now
@@ -35,8 +36,9 @@ const orderSchema = new mongoose.Schema({
     paymentId:{
         type:String,
         required:true
-    }
+    },
+
 })
 
-const Orders = mongoose.model('Oreders',orderSchema)
+const Orders = mongoose.model('Orders',orderSchema)
 export default Orders

@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema({
         required:true,
     },
     price:{
-        type:String,
+        type:Number,
         required:true
     },
     Image:{
@@ -21,10 +21,10 @@ const productSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    quantity:{
-        type:String
-
-    },
+    // quantity:{
+    //     type:Number,
+    //     default:1
+    // },
     isDeleted:{
         type:Boolean,
         default:false

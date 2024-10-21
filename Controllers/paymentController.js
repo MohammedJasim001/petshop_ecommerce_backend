@@ -2,6 +2,7 @@ import Razorpay from "razorpay"
 import dotenv from "dotenv"
 import crypto from 'crypto'
 import User from "../Models/userModel.js"
+import Orders from "../Models/orderModel.js"
 
 dotenv.config()
 
@@ -22,7 +23,7 @@ export const payment = async(req,res)=>{
     }
 
     if(!user.cart || user.cart.length===0){
-        res.status(200).json({message:"Your cart is empty"})
+        return res.status(200).json({message:"Your cart is empty"})
     }
     
     const amount = user.cart.reduce((total,item)=>{
@@ -38,7 +39,7 @@ export const payment = async(req,res)=>{
         currency:'INR',
         receipt:`receipt_order_${Math.random().toString(36).substring(2,15)}`,
         notes:{
-            product:productNames,
+            products:productNames,
             userid:id
         }
     }
@@ -46,4 +47,47 @@ export const payment = async(req,res)=>{
 
     const order = await razorpay.orders.create(option)
     res.status(201).json(order)
+}
+
+export const verifyPayment = async (req,res)=>{
+    const {razorpay_order_id,razorpay_payment_id,razorpay_signature} = req.body
+    // HMAC (Hash-based Message Authentication Code)
+    const hmac = crypto.createHmac('sha256',process.env.RAZORPAY_KEY_SECRET)
+    hmac.update(razorpay_order_id + '|' + razorpay_payment_id)
+    const generatedSignature = hmac.digest('hex')
+
+    if(generatedSignature !== razorpay_signature){
+        console.log(generatedSignature)
+        console.log(razorpay_signature)
+       return res.status(404).json({error:'Verification failed'})
+       
+    }
+
+    const order = await razorpay.orders.fetch(razorpay_order_id)
+
+    const user = await User.findById(order.notes.userid).populate({
+        path:'cart',
+        populate:{path:'productId'}
+    })
+
+    const newOrder = new Orders({
+        userId:user.id,
+        products:user.cart.map(item=>({
+            productId:item.productId.id,
+            quantity:item.quantity,
+            price:item.productId.price
+        })),
+        orderId:razorpay_order_id,
+        paymentId:razorpay_payment_id,
+        totalPrice:order.amount/100,
+        status:'Paid'
+    })
+    console.log(newOrder)
+    console.log(user.cart,'dddddd')
+
+    await newOrder.save()
+    user.orders.push(newOrder)
+    await user.save()
+
+    res.status(201).json({message:'Payment verified successfully'})
 }

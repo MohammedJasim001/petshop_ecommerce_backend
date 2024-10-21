@@ -21,7 +21,9 @@ const upload = multer({
 
     upload.single('image')(req,res,async(err)=>{
         if(err){
-            res.status(404).json({error:"File upload failed",err})
+            console.log(err)
+           return res.status(404).json({error:"File upload failed",err})
+           
         }
 
         if(req.file){
@@ -33,7 +35,7 @@ const upload = multer({
                 return res.status(500).json({error:"Cloudinary upload failed",err}) 
             }
         }else{
-            res.status(400).json({error:'No file uploaded'})
+           return res.status(400).json({error:'No file uploaded'})
         }
        
     })
