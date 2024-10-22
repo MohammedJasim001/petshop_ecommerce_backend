@@ -6,12 +6,14 @@ import productRoute from './Routes/productRoutes.js'
 import cartRoute from './Routes/cartRoutes.js'
 import wishlistRoute from './Routes/wishlistRouter.js'
 import orderRoute from './Routes/orderRoutes.js'
+import cors from 'cors'
 
 const port = 5000
 const app = express()
 dotenv.config()
 
 app.use(express.json())
+app.use(cors())
 
 app.use('/api/users',userRoute)
 app.use('/api/users',productRoute)

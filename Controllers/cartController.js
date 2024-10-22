@@ -27,7 +27,7 @@ export const addToCart = async (req,res)=>{
   //check item already in cart
         let cartItem = await Cart.findOne({userId:user._id,productId:product._id})
         if(cartItem){
-            return res.status(404).json({message:'item already in the cart'})
+            return res.status(409).json({message:'item already in the cart'})
             // cartItem.quantity++;
             // await cartItem.save()
             // return res.status(200).json({messege:'Cart product increment quantity'})
@@ -57,7 +57,7 @@ export const cartVeiw = async (req, res) => {
         }
       
         if (!user.cart || user.cart.length === 0) {
-          res.status(200).json({ message: "your cart is empty", data: [] });
+          return res.status(200).json({ message: "your cart is empty", data: [] });
         }
         res.status(200).json(user.cart);
 };
@@ -146,7 +146,7 @@ export const deleteCart = async(req,res)=>{
   //find cart item
         const cartItem = await Cart.findOneAndDelete({userId:user._id,productId:product._id})
         if(!cartItem){
-            res.status(404).json({error:'cartItem not found'})
+           return res.status(404).json({error:'cartItem not found'})
         }
 
         // user.cart = user.cart.filter((ele)=>ele.id!==cartItem._id)

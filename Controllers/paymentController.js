@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import crypto from 'crypto'
 import User from "../Models/userModel.js"
 import Orders from "../Models/orderModel.js"
+import Cart from "../Models/cartModel.js"
 
 dotenv.config()
 
@@ -87,7 +88,11 @@ export const verifyPayment = async (req,res)=>{
 
     await newOrder.save()
     user.orders.push(newOrder)
+    user.cart = []
+    await Cart.deleteMany({userId:user._id})
     await user.save()
+    console.log(user)
+    
 
     res.status(201).json({message:'Payment verified successfully'})
 }
