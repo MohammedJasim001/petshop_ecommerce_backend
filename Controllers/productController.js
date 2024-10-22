@@ -1,6 +1,6 @@
 import Products from "../Models/productModel.js"
 
-
+//viewProduct
 export const viewProduct = async(req,res)=>{
     
         const produts = await Products.find()
@@ -10,6 +10,7 @@ export const viewProduct = async(req,res)=>{
         res.status(200).json({produts})
 }
 
+//viewProductByID
 export const viewProductById = async (req,res)=>{
     
         const product = await Products.findById(req.params.id)
@@ -19,6 +20,7 @@ export const viewProductById = async (req,res)=>{
         res.status(200).send({product})
 }
 
+//viewProductByCategory
 export const viewProductByCategory = async(req,res)=>{
         
         const {categoryName} = req.params

@@ -37,10 +37,10 @@ const userSchema = new mongoose.Schema({
     orders:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Orders'
-    }],
-
-    
-})
+    }],  
+},
+{timestamps:true}
+)
 
 const User = mongoose.model("Users",userSchema)
 
