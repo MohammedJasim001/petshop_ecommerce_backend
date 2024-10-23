@@ -35,7 +35,7 @@ router.delete('/:userId/wishlist/:productId/removewishlist',tryCatchMiddleware(d
 
 //payment
 router.post('/payment/:id',tryCatchMiddleware(payment))
-router.post('/verifypayment/',tryCatchMiddleware(verifyPayment))
+router.post('/verifypayment',tryCatchMiddleware(verifyPayment))
 
 //order
 router.get("/:userId/orders",tryCatchMiddleware(getOrders))

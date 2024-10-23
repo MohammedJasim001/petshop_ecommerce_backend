@@ -1,7 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import userRoute from './Routes/userRoutes.js'
+import userRoutes from './Routes/userRoutes.js'
+import adminRoutes from './Routes/adminRoutes.js'
 import cors from 'cors'
 
 
@@ -13,8 +14,8 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-app.use('/api/users',userRoute)
-
+app.use('/api/users',userRoutes)
+app.use('/api/admin',adminRoutes)
 
 mongoose.connect(process.env.MONGO_URI)
         .then(()=>console.log('mongodb connected'))
