@@ -2,6 +2,7 @@
 
 const tryCatchMiddleware = (handler)=>{
     return async(req,res,next)=>{
+        
         try {
             handler(req,res,next)
         } catch (error) {

@@ -13,18 +13,18 @@ const productSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    Image:{
+    image:{
         type:String,
-
+     
     },
     category:{
         type:String,
         required:true
     },
-    // quantity:{
-    //     type:Number,
-    //     default:1
-    // },
+    quantity:{
+        type:Number,
+        default:1
+    },
     isDeleted:{
         type:Boolean,
         default:false
