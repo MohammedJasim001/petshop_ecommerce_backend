@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         default:Date.now(),
         required:true
     },
-    isDeleted:{
+    isBlocked:{
         type:Boolean,
         default:false
     },

@@ -7,7 +7,7 @@ export const userToken = async(req,res,next)=>{
     try {
         const header = req.headers['authorization']
         const token = header && header.split(' ')[1]
-
+        
         if(!token){
             return res.status(404).json({message:'token not provided'})
         }
