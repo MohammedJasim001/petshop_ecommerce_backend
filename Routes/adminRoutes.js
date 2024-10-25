@@ -5,6 +5,7 @@ import { blockUser, unblockUser, viewAllUsers, viewUserById, viewUserByName } fr
 import { adminToken } from "../Middlewares/adminAuthMiddleware.js"
 import { adminAddProduct, adminDeleteProduct, adminUpdateProduct, adminViewAllProducts, adminViewProductByCategory } from "../Controllers/Admin/adminProductController.js"
 import { uploadImage } from "../Middlewares/imageUploadMiddleware.js"
+import { orderDetails, orderStats, } from "../Controllers/Admin/adminOrderController.js"
 
 const router = express.Router()
 
@@ -25,5 +26,9 @@ router.get('/products/category/:productcategory',tryCatchMiddleware(adminViewPro
 router.post('/products/addproducts',uploadImage,tryCatchMiddleware(adminAddProduct))
 router.put('/products/updateproduct/:productId',uploadImage,tryCatchMiddleware(adminUpdateProduct))
 router.delete('/products/deleteproduct/:productId',tryCatchMiddleware(adminDeleteProduct))
+
+//adminOrderController
+router.get('/orders/orderdetails',tryCatchMiddleware(orderDetails))
+router.get('/orders/orderstats',tryCatchMiddleware(orderStats))
 
 export default router

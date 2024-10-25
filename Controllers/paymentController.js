@@ -71,13 +71,13 @@ export const verifyPayment = async (req,res)=>{
         populate:{path:'productId'}
     })
 
+    let products = []
+    user.cart.map(item=>{
+        products.push(item.productId._id)
+    })
     const newOrder = new Orders({
         userId:user.id,
-        products:user.cart.map(item=>({
-            productId:item.productId.id,
-            quantity:item.quantity,
-            price:item.productId.price
-        })),
+        productId:products,
         orderId:razorpay_order_id,
         paymentId:razorpay_payment_id,
         totalPrice:order.amount/100,

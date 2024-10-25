@@ -6,7 +6,7 @@ export const getOrders = async(req,res)=>{
 
     const user =await User.findById(userId).populate({
         path:"orders",
-        populate:{path:"orderId"}
+        populate:{path:"productId"}
     })
     if(!user){
         return res.status(404).json({error:"User not found"})

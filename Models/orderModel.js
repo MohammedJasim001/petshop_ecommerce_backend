@@ -6,15 +6,11 @@ const orderSchema = new mongoose.Schema({
         ref:'Users',
         required:true
     },
-    products:[{
-        productId:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Products',
-            required:true
-        },
-        quantity:Number,
-        price:Number
-    }],
+    productId:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Products',
+        required:true
+        }],
     purchaseDate:{
         type:Date,
         required:true,
