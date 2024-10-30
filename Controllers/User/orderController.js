@@ -1,8 +1,12 @@
 
-import User from "../Models/userModel.js"
+import User from "../../Models/userModel.js"
 
 export const getOrders = async(req,res)=>{
     const userId = req.params.userId
+
+    if (req.userId !== userId) {
+        return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+    }
 
     const user =await User.findById(userId).populate({
         path:"orders",

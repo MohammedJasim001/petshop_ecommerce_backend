@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
+
 export const userToken = async(req,res,next)=>{
     try {
         const header = req.headers['authorization']
@@ -12,14 +13,18 @@ export const userToken = async(req,res,next)=>{
             return res.status(404).json({message:'token not provided'})
         }
 
-        jwt.verify(token,process.env.JWT_SECRETE_KEY,(err,user)=>{
+        jwt.verify(token,process.env.JWT_SECRETE_KEY,(err,decoded)=>{
             if(err){
                 console.log(err)
                return res.status(404).json({message:'unauthorized check your token again'})
             }
-            req.email=user.email
-
-            next()
+            const { id } = decoded;
+            if (!id) {
+                return res.status(403).json({ message: 'Token is missing user identification.' });
+            }
+            
+            req.userId = id; 
+            next();
         })
 
     } catch (error) {

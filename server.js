@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import userRoutes from './Routes/userRoutes.js'
 import adminRoutes from './Routes/adminRoutes.js'
 import cors from 'cors'
+import cookieParser from "cookie-parser"
 
 
 dotenv.config()
@@ -11,6 +12,7 @@ dotenv.config()
 const port = process.env.PORT || 4000
 const app = express()
 
+app.use(cookieParser())
 app.use(express.json())
 app.use(cors())
 

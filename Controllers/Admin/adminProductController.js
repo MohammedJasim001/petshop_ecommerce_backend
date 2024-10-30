@@ -14,6 +14,15 @@ export const adminViewAllProducts = async (req,res)=>{
     res.status(200).json(products)
 }
 
+export const adminViewProductById = async (req,res)=>{
+    const {productId} = req.params
+    const product = await Products.findById(productId)
+    if (!product) {
+        return res.status(404).json({message:"Product not found"})
+    }
+    res.status(200).json(product)
+}
+
 export const adminViewProductByCategory = async (req,res)=>{
     const {productcategory} = req.params
 

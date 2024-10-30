@@ -2,6 +2,7 @@ import User from "../../Models/userModel.js"
 
 export const viewAllUsers = async (req,res)=>{
     const users = await User.find()
+    console.log();
     if(!users){
         return res.status(404).json({message:"No users"})
     }

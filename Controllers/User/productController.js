@@ -1,13 +1,14 @@
-import Products from "../Models/productModel.js"
+import Products from "../../Models/productModel.js"
+
 
 //viewProduct
 export const viewProduct = async(req,res)=>{
     
-        const produts = await Products.find()
+        const products = await Products.find()
         if(!Products){
             return res.status(404).json({message:'Unable to get products'})
         }
-        res.status(200).json({produts})
+        res.status(200).json({products})
 }
 
 //viewProductByID

@@ -1,9 +1,9 @@
 import Razorpay from "razorpay"
 import dotenv from "dotenv"
 import crypto from 'crypto'
-import User from "../Models/userModel.js"
-import Orders from "../Models/orderModel.js"
-import Cart from "../Models/cartModel.js"
+import User from "../../Models/userModel.js"
+import Orders from "../../Models/orderModel.js"
+import Cart from "../../Models/cartModel.js"
 
 dotenv.config()
 
@@ -14,6 +14,11 @@ const razorpay = new Razorpay ({
 
 export const payment = async(req,res)=>{
     const id = req.params.id
+
+    if (req.userId !== id) {
+        return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+    }
+
     const user = await User.findById(id).populate({
         path:'cart',
         populate:{path:'productId'}

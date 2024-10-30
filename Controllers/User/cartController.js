@@ -1,12 +1,16 @@
-import Cart from "../Models/cartModel.js";
-import Products from "../Models/productModel.js";
-import User from "../Models/userModel.js";
+import Cart from "../../Models/cartModel.js";
+import Products from "../../Models/productModel.js";
+import User from "../../Models/userModel.js";
 
 //add to cart
 export const addToCart = async (req,res)=>{
 
-        const userId = req.params.userId
-        const productId = req.params.productId
+        const {userId,productId} = req.params
+        
+
+        if (req.userId !== userId) {
+            return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+        }
   //find User
         const user = await User.findById(userId)
 
@@ -47,6 +51,11 @@ export const addToCart = async (req,res)=>{
 //view the cart
 export const cartVeiw = async (req, res) => {
         const userId = req.params.userId
+
+        if (req.userId !== userId) {
+            return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+        }
+
         const user = await User.findById(userId).populate({
           path: "cart",
           populate: { path: "productId" },
@@ -68,6 +77,10 @@ export const incrementQuantity = async(req,res)=>{
 
         const userId = req.params.userId
         const productId = req.params.productId
+
+        if (req.userId !== userId) {
+            return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+        }
        
   //find user
         const user = await User.findById(userId)
@@ -98,6 +111,10 @@ export const decrementQuantity = async(req,res)=>{
 
     const {userId,productId} = req.params
 
+    if (req.userId !== userId) {
+        return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+    }
+
   //find user
         const user = await User.findById(userId)
         if(!user){
@@ -115,14 +132,15 @@ export const decrementQuantity = async(req,res)=>{
         if(!cartItem){
             return res.status(404).json({error:'Cart not found'})
         }
-        if(cartItem.quantity>0){
-            cartItem.quantity--
-            await cartItem.save()
-            res.status(201).json({message:'Item count decreased'})
-        }
-        else{
-            res.status(404).json({message:'cannot decrease count lessthan zero'})
-        }
+            if(cartItem.quantity>1){
+                cartItem.quantity--
+                await cartItem.save()
+                return res.status(201).json({message:'Item count decreased'})
+            }
+          
+
+
+        
 } 
 
 
@@ -130,6 +148,10 @@ export const decrementQuantity = async(req,res)=>{
 export const deleteCart = async(req,res)=>{
 
         const {productId,userId} = req.params
+
+        if (req.userId !== userId) {
+            return res.status(403).json({ message: 'Access denied: unauthorized user.' });
+        }
   
   //find user
         const user = await User.findById(userId)
@@ -141,6 +163,8 @@ export const deleteCart = async(req,res)=>{
         const product = await Products.findById(productId)
         if(!product){
             return res.status(404).json({error:'Product not found'})
+            
+            
         }
 
   //find cart item
@@ -157,7 +181,7 @@ export const deleteCart = async(req,res)=>{
         if(cartItemIndex !== -1){
             user.cart.splice(cartItemIndex,1)
             await user.save()
-            res.status(200).json({message:"Item successfully removed from the cart"})
+            res.status(200).json({message:"Item removed from the cart"})
         }
 
    

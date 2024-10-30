@@ -1,5 +1,5 @@
-import User from "../Models/userModel.js";
-import userAuthJoi from "../Validation/userAuthJoi.js";
+import User from "../../Models/userModel.js";
+import userAuthJoi from "../../Validation/userAuthJoi.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
@@ -46,6 +46,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
     const userExist =await User.findOne({ email });
+    if(userExist.isBlocked==true) return res.status(210).json({message:"Admin Blocked"});
     if (!userExist) {
       return res.status(404).json({ error: "user not exist" });
     }

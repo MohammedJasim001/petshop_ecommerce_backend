@@ -17,6 +17,9 @@ export const adminToken = async (req,res,next)=>{
             if(err){
                return res.status(404).json({error:"Unauthorized check your token again"})
             }
+            if(admin.role!=='admin'){
+                return res.status(404).json({message:"You are not an admin"})
+            }
             req.email=admin.email
             next()
         })
