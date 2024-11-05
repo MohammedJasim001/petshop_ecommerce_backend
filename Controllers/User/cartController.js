@@ -25,7 +25,7 @@ export const addToCart = async (req,res)=>{
         const product = await Products.findById(productId)
 
         if(!product){
-            return res.status(404).json({error:"product not found"})
+            return res.status(404).json({message:"product not found"})
         }
 
   //check item already in cart
@@ -62,7 +62,7 @@ export const cartVeiw = async (req, res) => {
         });
       
         if (!user) {
-          return res.status(404).json({ error: "user not found" });
+          return res.status(404).json({ message: "user not found" });
         }
       
         if (!user.cart || user.cart.length === 0) {

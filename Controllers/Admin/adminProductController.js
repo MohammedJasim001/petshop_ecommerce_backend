@@ -52,7 +52,11 @@ export const adminAddProduct =async(req,res)=>{
         price:product.price,
         category:product.category,
         image:req.cloudinaryImageUrl,
-        quantity:product.quantity
+        quantity:product.quantity,
+        brand:product.brand,
+        rating:product.rating,
+        productCategory:product.productCategory,
+
     })
     await newProduct.save()
     res.status(201).json({message:"New product added",newProduct})
@@ -62,10 +66,10 @@ export const adminUpdateProduct = async(req,res)=>{
     const {productId} = req.params
 
     const updated = await Products.findByIdAndUpdate(productId)
-    if(!updated){
+    if(!updated){ 
         return res.status(404).json({error:"No products found"})
     }
-    const {title,description,category,price,quantity} = req.body
+    const {title,description,category,price,quantity,brand,rating,productCategory} = req.body
 
     if(title) updated.title=title
     if(description) updated.description=description
@@ -73,6 +77,9 @@ export const adminUpdateProduct = async(req,res)=>{
     if(price) updated.price=price
     if(quantity) updated.quantity=quantity
     if(req.cloudinaryImageUrl) updated.image=req.cloudinaryImageUrl
+    if(brand) updated.brand = brand
+    if(rating) updated.rating = rating
+    if(productCategory) updated.productCategory = productCategory
 
     await updated.save()
     res.status(201).json({message:"Product successfully updated",updated})

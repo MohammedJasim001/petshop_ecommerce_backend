@@ -6,6 +6,9 @@ const productJoi = Joi.object({
     price:Joi.number(),
     category:Joi.string(),
     Image:Joi.string(),
-    quantity:Joi.string()
+    quantity:Joi.optional(),
+    brand:Joi.string(),
+    rating:Joi.number(),
+    productCategory:Joi.string()
 })
 export default productJoi

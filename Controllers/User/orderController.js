@@ -8,7 +8,7 @@ export const getOrders = async(req,res)=>{
         return res.status(403).json({ message: 'Access denied: unauthorized user.' });
     }
 
-    const user =await User.findById(userId).populate({
+    const user = await User.findById(userId).populate({
         path:"orders",
         populate:{path:"productId"}
     })

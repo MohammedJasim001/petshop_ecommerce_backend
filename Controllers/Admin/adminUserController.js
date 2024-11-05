@@ -12,9 +12,12 @@ export const viewAllUsers = async (req,res)=>{
 export const viewUserById = async (req,res)=>{
     const {userId} = req.params
 
-    const user =await User.findById(userId)
+    const user = await User.findById(userId).populate({
+        path:"orders",
+        populate:{path:"productId"}
+    })
     if(!user){
-       return res.status(404).json({error:"User not found"})
+       return res.status(404).json({message:"User not found"})
     }
     res.status(200).json(user)
 }

@@ -53,7 +53,7 @@ export const wishlistView = async(req,res)=>{
     })
 
     if(!user.wishlist || user.wishlist.length===0){
-        return res.status(404).json({message:'Your wishlist is empty',data:[]})
+        return res.status(200).json({message:'Your wishlist is empty',data:[]})
     }
 
     res.status(200).json(user.wishlist)

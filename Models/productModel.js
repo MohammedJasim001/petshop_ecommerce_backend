@@ -22,13 +22,19 @@ const productSchema = new mongoose.Schema({
         required:true
     },
     quantity:{
-        type:Number,
-        default:1
+        type:String,
     },
-    isDeleted:{
-        type:Boolean,
-        default:false
-    }
+    brand:{
+        type:String
+    },
+    rating:{
+        type:Number
+    },
+    productCategory:{
+        type:String
+    },
+    
+
 },
 {timestamps:true}
 )
