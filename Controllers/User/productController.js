@@ -2,14 +2,37 @@ import Products from "../../Models/productModel.js"
 
 
 //viewProduct
-export const viewProduct = async(req,res)=>{
-    
-        const products = await Products.find()
-        if(!Products){
-            return res.status(404).json({message:'Unable to get products'})
+export const viewProduct = async (req, res) => {
+    try {
+
+        const page = parseInt(req.query.page) || 1
+        const limit = parseInt(req.query.limit) || 10
+
+        const skip = (page - 1) * limit;
+
+        const products = await Products.find().skip(skip).limit(limit);
+
+        const totalProducts = await Products.countDocuments();
+
+        if (!products || products.length === 0) {
+            return res.status(404).json({ message: 'No products found' });
         }
-        res.status(200).json({products})
-}
+
+        res.status(200).json({
+            products,
+            pagination: {
+                totalProducts,
+                currentPage: page,
+                totalPages: Math.ceil(totalProducts / limit),
+                hasNextPage: page * limit < totalProducts,
+                hasPreviousPage: page > 1,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred while fetching products', error });
+    }
+};
+
 
 //viewProductByID
 export const viewProductById = async (req,res)=>{
@@ -28,9 +51,9 @@ export const viewProductByCategory = async(req,res)=>{
         const product = await Products.find({
             $or:[
                 {category:{$regex:new RegExp(categoryName,'i')}},
-                {title:{$regex:new RegExp(categoryName,'i')}}
+                
             ]
-        }).select('title category price')
+        })
         
         if (!product || product.length===0) {
             return res.status(404).json({ message: 'Unable to get products' });

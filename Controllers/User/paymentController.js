@@ -76,28 +76,29 @@ export const verifyPayment = async (req,res)=>{
         populate:{path:'productId'}
     })
 
-    let products = []
-    user.cart.map(item=>{
-        products.push(item.productId._id)
-    })
+    const products = user.cart.map((item) => ({
+        productId: item.productId._id,
+        quantity: item.quantity,
+    }));
+    
     const newOrder = new Orders({
-        userId:user.id,
-        productId:products,
-        orderId:razorpay_order_id,
-        paymentId:razorpay_payment_id,
-        totalPrice:order.amount/100,
-        status:'Paid'
-    })
-    console.log(newOrder)
-    console.log(user.cart,'dddddd')
+        userId: user.id,
+        products: products, 
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id,
+        totalPrice: order.amount / 100,
+        status: 'Paid',
+    });
+    
 
     await newOrder.save()
     user.orders.push(newOrder)
     user.cart = []
-    await Cart.deleteMany({userId:user._id})
+  
     await user.save()
+    await Cart.deleteMany({userId:user._id})
     console.log(user)
     
 
-    res.status(201).json({message:'Payment verified successfully'})
+    res.status(201).json({success:true,message:'Payment verified successfully'})
 }

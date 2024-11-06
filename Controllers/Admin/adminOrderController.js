@@ -13,11 +13,12 @@ export const orderDetails = async (req,res)=>{
 export const orderStats = async (req,res)=>{
     
     const stats = await Orders.aggregate([
+        { $unwind: "$products" },
         {
             $group: {
                 _id: null,
                 totalProducts: {
-                    $sum: { $size: "$productId" }
+                    $sum:  "$products.quantity" 
                 },
                 totalRevenue: { $sum: "$totalPrice" }
             }
