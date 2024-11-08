@@ -20,6 +20,10 @@ export const register = async (req, res) => {
 
   const { userName, email, password } = value;
 
+  if(email==process.env.ADMIN_EMAIL ){
+    return  res.status(403).json({message:"User already exist"})
+  }
+
     const existUser = await User.findOne({ email });
     if (existUser) {
       return res

@@ -22,7 +22,7 @@ const upload = multer({
     upload.single('image')(req,res,async(err)=>{
         if(err){
             console.log(err)
-           return res.status(404).json({error:"File upload failed",err})
+           return res.status(404).json({message:"File upload failed",err})
            
         }
 
@@ -32,10 +32,11 @@ const upload = multer({
                 req.cloudinaryImageUrl = stream.secure_url
                 next()
             } catch (error) {
-                return res.status(500).json({error:"Cloudinary upload failed",err}) 
+                return res.status(500).json({message:"Cloudinary upload failed",err}) 
             }
         }else{
-           return res.status(400).json({error:'No file uploaded'})
+            res.status(200).json({message:'No file uploaded'})
+            next()
         }
        
     })
